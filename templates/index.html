@@ -1,12 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
-<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='personalbootstrap.css')}}">
 </head>
-<body>
-    
+
+<body class="fldc">
+    <!-- <div class="fa fa-info"></div> -->
+    <h1>Secure Me</h1>
+    <div class="formContainer">
+        <h5>Password Generator</h5>
+        <div class="formGroup">
+            <div class="inputGroup">
+                <label for="length">Password Length:
+                    <input type="number" name="" value="12" min="8" max="30" id="length">
+                </label>
+            </div>
+            <div class="inputGroup ">
+                <label for="hintWord">Hint Word:</label>
+                <input type="text" name="hintWord" id="" placeholder="(e.g chair,table,cuision)">
+            </div>
+            <div class="inputGroup ">
+                <label class="inputCheck" for="include_uppercase">
+                    Include Uppercase:
+                </label>
+                <input type="checkbox" class="checkBox" id="include_uppercase" checked>
+                <span>(e.g. ABCDEFGH)</span>
+
+
+            </div>
+            <div class="inputGroup">
+                <label class="inputCheck" for="include_lowercase">
+                    Include Lowercase: </label> <input type="checkbox" class="checkBox" id="include_lowercase" checked>
+                <span>(e.g. abcdefgh)</span>
+            </div>
+            <div class="inputGroup">
+                <label class="inputCheck" for="include_numbers">
+                    Include Numbers: </label>
+                <input type="checkbox" class="checkBox" id="include_numbers" checked>
+                <span>(e.g. 01234567)</span>
+            </div>
+
+            <div class="inputGroup">
+                <label class="inputCheck" for="include_characters">Include Characters</label>
+                <input type="checkbox" class="checkBox" id="include_characters" checked>
+                <span>(e.g. !@#$%^&*()+-)</span>
+            </div>
+            <div class="inputGroup">
+                <label class="inputCheck" for="include_ambiguous_characters">Avoid Ambiguous Characters:</label>
+                <input type="checkbox" class="checkBox" id="include_ambiguous_characters">
+                <span> (e.g., '1', 'l', '0', 'O')</span>
+            </div>
+        </div>
+        <input type="text" readonly id="generatedPasswordID" placeholder="Your Generated Password">
+
+        <div class="buttons dfAc">
+            <button onClick="copyPassword()">Copy to Clipboard</button>
+            <button>Generate Password</button>
+        </div>
+    </div>
+    <script>
+        function copyPassword() {
+            const copyPasswordText = document.getElementById("generatedPasswordID");
+            copyPasswordText.select();
+            navigator.clipboard.writeText(copyPasswordText.value)
+        }
+    </script>
 </body>
+
 </html>
