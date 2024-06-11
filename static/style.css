@@ -20,7 +20,15 @@ body {
   /* #80CBC8 */
 
 }
-
+.info{
+  background: rgb(10, 10, 10);
+  font-size: 1.8rem;
+  word-wrap: break-word !important;
+  box-shadow: 0 0 2px rgba(255, 255, 255, .6) !important;
+}
+.toastifyContainer{
+  width: 40rem !important;
+}
 body>h1 {
   color: var(--primary-color);
   padding: 1rem 0;
@@ -147,6 +155,7 @@ border: 1px solid  rgba(161, 161, 170, 0.568);
 .formContainer .inputGroup input[type="number"] {
   height: 3rem;
   width: 6rem;
+  padding: 1rem 0 1rem .4rem;
   border: 1px solid transparent;
   background-color: rgb(237, 237, 237);
   border-radius: .5rem;

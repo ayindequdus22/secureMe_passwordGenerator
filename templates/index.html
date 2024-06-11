@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='personalbootstrap.css')}}">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 
 <body class="fldc">
@@ -17,12 +19,12 @@
         <div class="formGroup">
             <div class="inputGroup">
                 <label for="length">Password Length:
-                    <input type="number" name="" value="12" min="8" max="30" id="length">
+                    <input type="number" name="" value="30" min="8" max="30" id="length">
                 </label>
             </div>
             <div class="inputGroup ">
-                <label for="hintWord">Hint Word:</label>
-                <input type="text" name="hintWord" id="" placeholder="(e.g chair,table,cuision)">
+                <label for="addWord">Add Word:</label>
+                <input type="text" name="addWord" id="addWord" placeholder="(e.g chair,table,cuision)">
             </div>
             <div class="inputGroup ">
                 <label class="inputCheck" for="include_uppercase">
@@ -46,8 +48,8 @@
             </div>
 
             <div class="inputGroup">
-                <label class="inputCheck" for="include_characters">Include Characters</label>
-                <input type="checkbox" class="checkBox" id="include_characters" checked>
+                <label class="inputCheck" for="include_special_characters">Include Characters</label>
+                <input type="checkbox" class="checkBox" id="include_special_characters" checked>
                 <span>(e.g. !@#$%^&*()+-)</span>
             </div>
             <div class="inputGroup">
@@ -59,15 +61,47 @@
         <input type="text" readonly id="generatedPasswordID" placeholder="Your Generated Password">
 
         <div class="buttons dfAc">
-            <button onClick="copyPassword()">Copy to Clipboard</button>
-            <button>Generate Password</button>
+            <button type="button" onClick="copyPassword()">Copy to Clipboard</button>
+            <button type="button" id="generate">Generate Password</button>
         </div>
     </div>
     <script>
+        const generatePassword = async()=>{
+            const length = document.getElementById('length').value;
+            const include_uppercase = document.getElementById('include_uppercase').checked;
+            const include_lowercase = document.getElementById('include_lowercase').checked;
+            const include_numbers = document.getElementById('include_numbers').checked;
+            const include_special_characters = document.getElementById('include_special_characters').checked;
+            const include_ambiguous_characters = document.getElementById('include_ambiguous_characters').checked;
+            const include_added_words = document.getElementById('addWord').value.split(',').map(w => w.trim());
+           
+            const res = await fetch('/generate-password',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({length,include_uppercase,include_lowercase,include_numbers,include_special_characters,include_ambiguous_characters,include_added_words})
+            })
+            const data = await res.json();
+       
+            document.getElementById("generatedPasswordID").value = data?.password
+        }
+        document.getElementById('generate').addEventListener('click',generatePassword);
         function copyPassword() {
             const copyPasswordText = document.getElementById("generatedPasswordID");
             copyPasswordText.select();
             navigator.clipboard.writeText(copyPasswordText.value)
+            if(copyPasswordText.value){
+              Toastify({
+  text: `${copyPasswordText.value} has been copied`,
+  className: "info",duration:20000,
+  gravity: "bottom", 
+  position: "right",
+}).showToast();    
+            }    
+          else{
+            Toastify.show({
+
+            })
+          }
         }
     </script>
 </body>
