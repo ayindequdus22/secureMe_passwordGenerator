@@ -7,8 +7,6 @@
     <title>Password Generator</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename='personalbootstrap.css')}}">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 
 <body class="fldc">
@@ -65,8 +63,11 @@
             <button type="button" id="generate">Generate Password</button>
         </div>
     </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
     <script>
-        const generatePassword = async()=>{
+        const generatePassword = async () => {
+            // Getting the values to be posted and used in the generation of the password
             const length = document.getElementById('length').value;
             const include_uppercase = document.getElementById('include_uppercase').checked;
             const include_lowercase = document.getElementById('include_lowercase').checked;
@@ -74,34 +75,50 @@
             const include_special_characters = document.getElementById('include_special_characters').checked;
             const include_ambiguous_characters = document.getElementById('include_ambiguous_characters').checked;
             const include_added_words = document.getElementById('addWord').value.split(',').map(w => w.trim());
-           
-            const res = await fetch('/generate-password',{
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({length,include_uppercase,include_lowercase,include_numbers,include_special_characters,include_ambiguous_characters,include_added_words})
+// Creating the post request 
+            const res = await fetch('/generate-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ length, include_uppercase, include_lowercase, include_numbers, include_special_characters, include_ambiguous_characters, include_added_words })
             })
+
             const data = await res.json();
-       
+            if(res.status === 200){
+                
+            } else{
+                Toastify({
+                    text:data?.error || "An error occured",
+                    className: "error", duration: 4000,
+                    gravity: "bottom",
+                    position: "right",
+                }).showToast();   
+            }
+
             document.getElementById("generatedPasswordID").value = data?.password
         }
-        document.getElementById('generate').addEventListener('click',generatePassword);
+    
+        document.getElementById('generate').addEventListener('click', generatePassword);
+    //   the copy function
         function copyPassword() {
             const copyPasswordText = document.getElementById("generatedPasswordID");
             copyPasswordText.select();
             navigator.clipboard.writeText(copyPasswordText.value)
-            if(copyPasswordText.value){
-              Toastify({
-  text: `${copyPasswordText.value} has been copied`,
-  className: "info",duration:20000,
-  gravity: "bottom", 
-  position: "right",
-}).showToast();    
-            }    
-          else{
-            Toastify.show({
-
-            })
-          }
+            if (!copyPasswordText.value == "") {
+                Toastify({
+                    text: `${copyPasswordText.value} has been copied`,
+                    className: "info", duration: 4000,
+                    gravity: "bottom",
+                    position: "right",
+                }).showToast();
+            }
+            else {
+                Toastify({
+                    text: `Nothing to be copied`,
+                    className: "info", duration: 4000,
+                    gravity: "bottom",
+                    position: "right",
+                }).showToast();
+            }
         }
     </script>
 </body>
