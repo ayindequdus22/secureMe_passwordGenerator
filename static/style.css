@@ -16,7 +16,7 @@ html {
 
 body {
   position: relative;
-  font-family: sans-serif, Poppins;
+  font-family: "Poppins", sans-serif;
   background: rgb(0, 0, 0);
   color: white;
   height: 100vh;
