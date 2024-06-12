@@ -5,16 +5,14 @@ import secrets
 app = Flask(__name__)
 
 
-@app.route(
-    "/"
-)  # defining the index route and returning what is to be rendered on the page
+@app.route("/")
+# defining the index route and returning what is to be rendered on the page
 def index():
     return render_template("index.html")
 
 
-@app.route(
-    "/generate-password", methods=["post"]
-)  # defining the route for the posted data
+@app.route("/generate-password", methods=["post"])
+# defining the route for the posted data
 def generate_password():
     # Using try and except to show and handle any errors during the request
     try:
@@ -64,8 +62,16 @@ def generate_password():
 
             # generating the password using char_set and the length specified from the user
         password = "".join(secrets.choice(char_set) for _ in range(length))
+
+        # now we have to calculate the complexity of the password
+        if length < 8:
+            return jsonify({"password": password, "strength": "Weak"}), 200
+        elif length <= 12:
+            return jsonify({"password": password, "strength": "Medium"}), 200
+        else:
+            return jsonify({"password": password, "strength": "Strong"}), 200
         # returning the generated password as the response with a status code of 200
-        return jsonify({"password": password}), 200
+        # return
     except Exception as error:
         # if there's an error maybe during the password generation
         # it returns the error and status code and logs the error for easy  debugging

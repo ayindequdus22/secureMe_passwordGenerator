@@ -10,14 +10,15 @@
 </head>
 
 <body class="fldc">
-    <!-- <div class="fa fa-info"></div> -->
+
+    </div>
     <h1>Secure Me</h1>
-    <div class="formContainer">
+    <div class="formContainer ">
         <h5>Password Generator</h5>
         <div class="formGroup">
             <div class="inputGroup">
                 <label for="length">Password Length:
-                    <input type="number" name="" value="30" min="8" max="30" id="length">
+                    <input type="number" name="" value="8" min="6" max="30" id="length">
                 </label>
             </div>
             <div class="inputGroup ">
@@ -51,21 +52,29 @@
                 <span>(e.g. !@#$%^&*()+-)</span>
             </div>
             <div class="inputGroup">
-                <label class="inputCheck" for="include_ambiguous_characters">Avoid Ambiguous Characters:</label>
+                <label class="inputCheck" for="include_ambiguous_characters">Include Ambiguous Characters:</label>
                 <input type="checkbox" class="checkBox" id="include_ambiguous_characters">
                 <span> (e.g., '1', 'l', '0', 'O')</span>
             </div>
         </div>
-        <input type="text" readonly id="generatedPasswordID" placeholder="Your Generated Password">
+
+        <div class="generatedPassword">
+            <input type="text" readonly id="generatedPasswordID" placeholder="Your Generated Password">
+            <div id="strengthBarContainer">
+                <div id="strengthBar"></div>
+            </div>
+        </div>
 
         <div class="buttons dfAc">
             <button type="button" onClick="copyPassword()">Copy to Clipboard</button>
-            <button type="button" id="generate">Generate Password</button>
+            <button type="button" id="generate">Generate Password
+            </button>
         </div>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
+        document.getElementById("strengthBarContainer").style.display = "none"
         const generatePassword = async () => {
             // Getting the values to be posted and used in the generation of the password
             const length = document.getElementById('length').value;
@@ -75,7 +84,7 @@
             const include_special_characters = document.getElementById('include_special_characters').checked;
             const include_ambiguous_characters = document.getElementById('include_ambiguous_characters').checked;
             const include_added_words = document.getElementById('addWord').value.split(',').map(w => w.trim());
-// Creating the post request 
+            // Creating the post request 
             const res = await fetch('/generate-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -83,22 +92,34 @@
             })
 
             const data = await res.json();
-            if(res.status === 200){
-                
-            } else{
+            if (res.status !== 200) {
                 Toastify({
-                    text:data?.error || "An error occured",
+                    text: data?.error || "An error occured",
                     className: "error", duration: 4000,
                     gravity: "bottom",
                     position: "right",
-                }).showToast();   
-            }
+                }).showToast();
+            } else {
+                document.getElementById("generatedPasswordID").value = data?.password;
 
-            document.getElementById("generatedPasswordID").value = data?.password
+                document.getElementById("strengthBarContainer").style.display = "block";
+                const strengthBar = document.getElementById("strengthBar");
+                // styling the strength bar based on the strength of the password
+                if (data.strength === "Weak") {
+                    strengthBar.style.width = "40%";
+                    strengthBar.style.background = "red";
+                } else if (data.strength === "Medium") {
+                    strengthBar.style.width = "70%";
+                    strengthBar.style.background = "yellow";
+                } else {
+                    strengthBar.style.width = "100%";
+                    strengthBar.style.background = "green";
+                }
+            }
         }
-    
+
         document.getElementById('generate').addEventListener('click', generatePassword);
-    //   the copy function
+        //   the copy function
         function copyPassword() {
             const copyPasswordText = document.getElementById("generatedPasswordID");
             copyPasswordText.select();

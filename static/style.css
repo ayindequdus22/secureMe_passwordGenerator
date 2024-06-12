@@ -15,6 +15,7 @@ html {
 }
 
 body {
+  position: relative;
   font-family: sans-serif, Poppins;
   background: rgb(0, 0, 0);
   color: white;
@@ -39,6 +40,11 @@ h5 {
   align-items: center;
 }
 
+.df-ac {
+  display: flex;
+  align-items: center;
+}
+
 .fldc {
   display: flex;
   align-items: center;
@@ -47,6 +53,7 @@ h5 {
 }
 
 .bodyContainer {
+
   box-shadow: 0 0 4px rgba(255, 255, 255, .6);
   border-radius: 1rem;
 }
@@ -192,10 +199,18 @@ body>h1 {
 }
 
 .formGroup {
-  gap: 1rem;
+  gap: 1.7rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.formContainer .passwordStrength {
+  margin: 1rem 0 .5rem;
+}
+
+.formContainer .passwordStrength p {
+  font-size: 2rem;
 }
 
 .formContainer .buttons {
@@ -221,14 +236,40 @@ body>h1 {
   border: 1px solid transparent;
 }
 
-#generatedPasswordID {
+.generatedPassword {
   width: 100%;
+  height: 5rem;
+  /* align-items: center; */
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.generatedPassword #strengthBarContainer {
+  width: 98.6%;
+  position: absolute;
+  bottom: 0;
+  z-index: 1000;
+  border-radius: 3rem;
+  background-color: rgba(128, 128, 128, 0.781) !important;
+  height: .8rem;
+}
+
+.generatedPassword #strengthBarContainer #strengthBar {
+  height: inherit;
+
+  border-radius: 1rem;
+}
+
+#generatedPasswordID {
+  width: inherit;
+  height: inherit;
   background-color: rgb(237, 237, 237);
-  padding: 1rem;
+  padding: 0 1rem;
   border: 1px solid transparent;
   border-radius: 1rem;
   font-size: 2rem;
-  margin: 1rem 0;
 }
 
 
