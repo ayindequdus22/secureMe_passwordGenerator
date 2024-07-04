@@ -30,10 +30,10 @@ def generate_password():
 
         uppercase_chars = string.ascii_uppercase
         lowercase_chars = string.ascii_lowercase
-        uppercase_chars = string.ascii_uppercase
+        # uppercase_chars = string.ascii_uppercase
         number_chars = string.digits
         special_chars = string.punctuation
-        ambiguous_chars = "il1Lo0O"
+        ambiguous_chars = "il1o0O"
 
         # Checking for characters to be included in the generated password
         # And adding it to an empty string
