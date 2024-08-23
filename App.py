@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import string
 import secrets
 
-app = Flask(__name__, static_folder='static', template_folder='template')
+app = Flask(__name__,)
 
 @app.route("/")
 # defining the index route and returning what is to be rendered on the page
