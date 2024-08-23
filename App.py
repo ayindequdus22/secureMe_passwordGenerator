@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import string
 import secrets
 
-app = Flask(__name__)
-
+app = Flask(__name__, static_folder='static', template_folder='template')
 
 @app.route("/")
 # defining the index route and returning what is to be rendered on the page
@@ -79,5 +78,5 @@ def generate_password():
         return jsonify({"error": error}), 500
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", debug=True)
